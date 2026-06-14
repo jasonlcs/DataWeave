@@ -494,7 +494,7 @@ function applyL10N(){
   btns.forEach(function(b){var el=d.querySelector('[onclick*="'+b[0]+'"]');if(el){el.childNodes[0]&&(el.childNodes[0].textContent=b[1]);el.title=b[2];}});
   var copyBtn=d.getElementById('copyBtn');if(copyBtn && copyBtn.textContent.indexOf('✅')===-1)copyBtn.textContent=L.copyLabel;
   // Toggles
-  var toggles=d.querySelectorAll('.toggle');if(toggles[1])toggles[1].childNodes[1]&&(toggles[1].textContent=L.filter);if(toggles[2])toggles[2].childNodes[1]&&(toggles[2].textContent=L.collapse);
+  var toggles=d.querySelectorAll('.toggle');if(toggles[1]&&toggles[1].childNodes[1])toggles[1].childNodes[1].textContent=L.filter;if(toggles[2]&&toggles[2].childNodes[1])toggles[2].childNodes[1].textContent=L.collapse;
   // Panels
   var ph=d.querySelectorAll('.panel-header .title');if(ph[0])ph[0].textContent=L.dataHeader;if(ph[1])ph[1].textContent=L.filterHeader;if(ph[2])ph[2].textContent=L.patternHeader;
   // Data action buttons
@@ -774,7 +774,7 @@ function auto(){
 }
 
 function setauto(){autoPreview=$('chkAuto').checked;auto();}
-function toggleFilter(){isFiltering=$('chkFilter').checked;$('filterPanel').style.display=isFiltering?'':(collapseMode?'':'flex');auto();}
+function toggleFilter(){isFiltering=$('chkFilter').checked;$('filterPanel').style.display=isFiltering?'flex':'none';auto();}
 function toggleCollapse(){
   collapseMode=$('chkCollapse').checked;
   var panels=document.querySelectorAll('.panel-wrap');
