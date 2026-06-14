@@ -417,8 +417,8 @@ var autoCalculationInProgress = false;
 var _debounceTimer = 0;
 var currentLang = "zh";
 
-var defaultText = "Lumbergh, Bill, Initech\nWaddams, Milton, Initech\nGibbons, Peter, Initech\nBolton, Michael, Initech";
-var defaultPattern = "To: $1.$0@$2.com\nHello $1 $0,\nI'm sorry to inform you of a terrible accident at $2.\n---";
+var defaultText = "Alice,Johnson,Engineering,alice@company.com\nBob,Smith,Design,bob@company.com\nCharlie,Brown,Engineering,charlie@company.com\nDiana,Prince,Marketing,diana@company.com\nEdward,Norton,Engineering,ed@company.com";
+var defaultPattern = "INSERT INTO employees (first_name, last_name, department, email) VALUES ('$0', '$1', '$2', '$3');";
 
 // ── L10N ──
 var L10N={zh:{brand:'DataWeave',subtitle:'文字處理工具',calc:'▶ 計算',calcTitle:'計算 (F5)',
