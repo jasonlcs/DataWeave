@@ -331,6 +331,9 @@ select:focus { border-color: var(--accent); }
   <button class="btn btn-ghost btn-xs" onclick="saveSnippet();" id="btnSaveSnippet" title="儲存 pattern">💾 儲存</button>
   <button class="btn btn-ghost btn-xs" onclick="showSnippets();" title="載入 pattern">📂 載入</button>
   <button class="btn btn-ghost btn-xs" onclick="downloadResult();" title="下載結果">⤓ 下載</button>
+  <button class="btn btn-ghost btn-xs" onclick="exportProject();" title="匯出專案 (JSON)">📤 匯出</button>
+  <button class="btn btn-ghost btn-xs" onclick="$('importFile').click();" title="匯入專案 (JSON)">📥 匯入</button>
+  <input type="file" id="importFile" accept=".json" onchange="importProject(this);" style="display:none">
   <button class="btn btn-ghost btn-xs" onclick="clearDefault();" title="清除全部">✕ 清除</button>
   <button class="btn btn-ghost btn-icon" onclick="showHelp();" title="使用說明">?</button>
 </div>
@@ -963,6 +966,46 @@ function removeDuplicatesControl(target){var rows=getRows(target),uniques=rows.u
 function removeDataDuplicates(){removeDuplicatesControl('Data');}
 function removeResultDuplicates(){removeDataDuplicates();}
 function downloadResult(){var text=$('txtResults').value,blob=new Blob([text],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dataweave_results.txt';a.click();URL.revokeObjectURL(a.href);}
+function exportProject(){
+  var project={
+    v:1,
+    data:$('txtData').value,
+    pattern:$('txtPattern').value,
+    col:$('fieldDelim').value,
+    row:$('rowDelim').value,
+    csv:csvMode,
+    colRx:columnDelimiterIsRegex,
+    rowRx:rowDelimiterIsRegex
+  };
+  var json=JSON.stringify(project,null,2);
+  var blob=new Blob([json],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  var ts=new Date().toISOString().replace(/:/g,'-').replace(/\..+/,'');
+  a.download='dataweave_'+ts+'.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function importProject(input){
+  var file=input.files[0];
+  if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var project=JSON.parse(e.target.result);
+      if(project.data!==undefined)$('txtData').value=project.data;
+      if(project.pattern!==undefined)$('txtPattern').value=project.pattern;
+      if(project.col!==undefined)$('fieldDelim').value=project.col;
+      if(project.row!==undefined)$('rowDelim').value=project.row;
+      if(project.csv!==undefined){csvMode=project.csv;$('chkCsvMode').checked=csvMode;}
+      if(project.colRx!==undefined){columnDelimiterIsRegex=project.colRx;$('chkColRegex').checked=columnDelimiterIsRegex;}
+      if(project.rowRx!==undefined){rowDelimiterIsRegex=project.rowRx;$('chkRowRegex').checked=rowDelimiterIsRegex;}
+      go();
+    }catch(err){alert('匯入失敗：'+err.message);}
+  };
+  reader.readAsText(file);
+  input.value='';
+}
 function copyResult(){
   var text=$('txtResults').value;
   if(!text){return;}
