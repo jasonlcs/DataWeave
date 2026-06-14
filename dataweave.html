@@ -46,9 +46,6 @@
     --shadow: 0 1px 3px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.2);
     --shadow-lg: 0 4px 16px rgba(0,0,0,.4);
   }
-  #trustBanner { background: #5c3d0e; color: #f0d07c; border-bottom-color: #8b6914; }
-  #trustBanner .btn-primary { background: #cf3a1a; border-color: #cf3a1a; }
-  #trustBanner .btn-primary:hover { background: #e84a2a; border-color: #e84a2a; }
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -287,17 +284,6 @@ select:focus { border-color: var(--accent); }
 .snippet-item:hover .snippet-del { opacity: 1; }
 .snippet-del:hover { background: var(--red); color: #fff; }
 
-/* ── Trust Banner ── */
-#trustBanner {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 14px; background: var(--amber); color: #000;
-  font-size: 12px; font-weight: 500;
-  border-bottom: 2px solid #d4880f; flex-shrink: 0;
-}
-#trustBanner .btn { font-size: 11px; padding: 4px 10px; }
-#trustBanner .btn-primary { background: #d4380d; border-color: #d4380d; color: #fff; }
-#trustBanner .btn-primary:hover { background: #b0320b; border-color: #b0320b; }
-
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -344,17 +330,9 @@ select:focus { border-color: var(--accent); }
   <button class="btn btn-ghost btn-xs lang-switch" data-lang="ja" onclick="switchLang('ja')" title="日本語">日</button>
   <button class="btn btn-ghost btn-xs" onclick="saveSnippet();" id="btnSaveSnippet" title="儲存 pattern">💾 儲存</button>
   <button class="btn btn-ghost btn-xs" onclick="showSnippets();" title="載入 pattern">📂 載入</button>
-  <button class="btn btn-ghost btn-xs" onclick="saveUrl();" title="複製分享連結">🔗 分享</button>
   <button class="btn btn-ghost btn-xs" onclick="downloadResult();" title="下載結果">⤓ 下載</button>
   <button class="btn btn-ghost btn-xs" onclick="clearDefault();" title="清除全部">✕ 清除</button>
   <button class="btn btn-ghost btn-icon" onclick="showHelp();" title="使用說明">?</button>
-</div>
-
-<!-- ── Trust Banner ── -->
-<div id="trustBanner" style="display:none;">
-  <span>⚠ 此分享連結含可執行程式碼</span>
-  <button class="btn btn-primary" id="trustBtn" onclick="trustAndExecute();">檢視並信任執行</button>
-  <button class="btn" id="trustRejectBtn" onclick="rejectTrusted();">略過</button>
 </div>
 
 <!-- ── Main Panels ── -->
@@ -515,7 +493,7 @@ function applyL10N(){
   var calc=d.getElementById('calc_button');if(calc){calc.value=L.calc;calc.title=L.calcTitle;}
   var sel=d.getElementById('selectSnippet');if(sel&&sel.options[0])sel.options[0].textContent=L.snippetPlaceholder;
   // Toolbar buttons
-  var btns=[['saveSnippet',L.saveBtn,L.saveTitle],['showSnippets',L.loadBtn,L.loadTitle],['saveUrl',L.shareBtn,L.shareTitle],['downloadResult',L.downloadBtn,L.downloadTitle],['clearDefault',L.clearBtn,L.clearTitle]];
+  var btns=[['saveSnippet',L.saveBtn,L.saveTitle],['showSnippets',L.loadBtn,L.loadTitle],['downloadResult',L.downloadBtn,L.downloadTitle],['clearDefault',L.clearBtn,L.clearTitle]];
   btns.forEach(function(b){var el=d.querySelector('[onclick*="'+b[0]+'"]');if(el){el.childNodes[0]&&(el.childNodes[0].textContent=b[1]);el.title=b[2];}});
   var copyBtn=d.getElementById('copyBtn');if(copyBtn && copyBtn.textContent.indexOf('✅')===-1)copyBtn.textContent=L.copyLabel;
   // Toggles
@@ -591,55 +569,6 @@ function parseCSV(text, delim) {
   // Clean empty trailing row
   if (rows.length > 0 && rows[rows.length - 1].length === 1 && rows[rows.length - 1][0] === '') rows.pop();
   return rows;
-}
-
-// ── LZ COMPRESSION (for hash sharing) ──
-function lzCompress(str) {
-  var out = [], i = 0, n = str.length;
-  while (i < n) {
-    var bestLen = 0, bestDist = 0;
-    var searchStart = Math.max(0, i - 1024);
-    var maxSearchLen = Math.min(n - i, 64);
-    for (var j = searchStart; j < i; j++) {
-      var len = 0;
-      while (len < maxSearchLen && str[j + len] === str[i + len]) len++;
-      if (len >= 4 && len > bestLen) { bestLen = len; bestDist = i - j; }
-    }
-    if (bestLen >= 4) {
-      out.push(254); out.push(bestDist & 0xFF); out.push(bestLen);
-      i += bestLen;
-    } else {
-      var ch = str.charCodeAt(i);
-      if (ch >= 254) { out.push(253); out.push(ch - 254); }
-      else out.push(ch);
-      i++;
-    }
-  }
-  var parts = [];
-  for (i = 0; i < out.length; i += 1024) parts.push(String.fromCharCode.apply(null, out.slice(i, i + 1024)));
-  return btoa(parts.join('')).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-
-function lzDecompress(b64) {
-  b64 = b64.replace(/-/g, '+').replace(/_/g, '/');
-  while (b64.length % 4) b64 += '=';
-  var binary = atob(b64), out = '', i = 0, n = binary.length;
-  while (i < n) {
-    var ch = binary.charCodeAt(i);
-    if (ch === 254 && i + 2 < n) {
-      var dist = binary.charCodeAt(i + 1), len = binary.charCodeAt(i + 2);
-      var start = out.length - dist;
-      for (var k = 0; k < len; k++) out += out[start + k];
-      i += 3;
-    } else if (ch === 253 && i + 1 < n) {
-      out += String.fromCharCode(254 + binary.charCodeAt(i + 1));
-      i += 2;
-    } else {
-      out += String.fromCharCode(ch);
-      i++;
-    }
-  }
-  return out;
 }
 
 function showCount(panel, len, prev) {
@@ -912,7 +841,6 @@ function calculate(data,pattern,filter,rowDelim,fieldDelim,outParam){
 
 // ── MAIN ACTIONS ──
 function go(){
-  if(!_trustedPattern)return;
   try{
     var rowDelim=interpret($('rowDelim').value),fieldDelim=interpret($('fieldDelim').value);
     var data=$('txtData').value,pattern=$('txtPattern').value;
@@ -930,7 +858,6 @@ function go(){
 }
 
 function auto(){
-  if(!_trustedPattern)return;
   if(!autoPreview||!ready)return;
   clearTimeout(_debounceTimer);
   _debounceTimer=setTimeout(function(){
@@ -1053,64 +980,13 @@ function copyResult(){
   });
 }
 
-// ── SAVE/LOAD URL ──
-function saveUrl(){
-  var d=$('txtData').value,p=$('txtPattern').value;
-  var c=$('fieldDelim').value,r=$('rowDelim').value;
-  var payload='d='+lzCompress(d)+'&p='+lzCompress(p)+'&c='+encodeURIComponent(c)+'&r='+encodeURIComponent(r);
-  var url=window.location.origin+window.location.pathname+'#'+payload;
-  navigator.clipboard.writeText(url).then(function(){alert(t('copied'));}).catch(function(){prompt(t('copyPrompt'),url);});
-}
-function _loadHash(){
-  var h=window.location.hash;
-  if(!h||h==='#')return false;
-  h=h.substring(1);
-  try{
-    var parts=h.split('&'),params={};
-    for(var i=0;i<parts.length;i++){var kv=parts[i].split('=');params[kv[0]]=kv.slice(1).join('=');}
-    if(params.d)$('txtData').value=lzDecompress(params.d);
-    if(params.p){$('txtPattern').value=lzDecompress(params.p);}
-    if(params.c)$('fieldDelim').value=decodeURIComponent(params.c);
-    if(params.r)$('rowDelim').value=decodeURIComponent(params.r);
-    return true;
-  }catch(e){console.error('Failed to load hash:',e);return false;}
-}
+// ── LOAD URL ──
 function loadQueryString(){
-  var fromHash=_loadHash();
-  if(!fromHash){
-    var p=new URLSearchParams(window.location.search);
-    if(p.has('data'))$('txtData').value=p.get('data');
-    if(p.has('pattern'))$('txtPattern').value=p.get('pattern');
-    if(p.has('col'))$('fieldDelim').value=p.get('col');
-    if(p.has('row'))$('rowDelim').value=p.get('row');
-  }
-}
-
-// ── TRUST BANNER ──
-var _trustedPattern=false;
-var _externalSource=false;
-function _hasScriptBlocks(pat){
-  return /<%[\s\S]*?%>/.test(pat);
-}
-function checkTrust(){
-  if(!_externalSource){_trustedPattern=true;return;}
-  var pat=$('txtPattern').value;
-  if(!_hasScriptBlocks(pat)){_trustedPattern=true;return;}
-  _trustedPattern=false;
-  $('trustBanner').style.display='flex';
-  $('chkAuto').checked=false;autoPreview=false;
-}
-function trustAndExecute(){
-  _trustedPattern=true;
-  $('trustBanner').style.display='none';
-  $('chkAuto').checked=true;autoPreview=true;
-  go();
-}
-function rejectTrusted(){
-  $('trustBanner').style.display='none';
-  $('txtPattern').value='';
-  _externalSource=false;_trustedPattern=true;
-  go();
+  var p=new URLSearchParams(window.location.search);
+  if(p.has('data'))$('txtData').value=p.get('data');
+  if(p.has('pattern'))$('txtPattern').value=p.get('pattern');
+  if(p.has('col'))$('fieldDelim').value=p.get('col');
+  if(p.has('row'))$('rowDelim').value=p.get('row');
 }
 
 // ── CLEAR ──
@@ -1213,18 +1089,13 @@ document.addEventListener('keydown',function(e){
 // ── INIT ──
 function init(){
   try{var sl=localStorage.getItem('dataweave_lang');if(sl&&L10N[sl])currentLang=sl;}catch(e){}
-  var hadHash=window.location.hash&&window.location.hash!=='#';
-  var hadQS=window.location.search&&window.location.search!=='';
-  _externalSource=hadHash||hadQS;
   loadQueryString();
   if(!$('txtData').value)$('txtData').value=defaultText;
   if(!$('txtPattern').value)$('txtPattern').value=defaultPattern;
   $('rowDelim').value=unterpret(detectNativeDelimiter());
   refreshSnippetDropdown();initResize();
   document.querySelectorAll('.lang-switch').forEach(function(b){b.classList.toggle('active',b.dataset.lang===currentLang);});
-  applyL10N();ready=true;
-  checkTrust();
-  if(_trustedPattern)go();
+  applyL10N();ready=true;go();
 }
 window.addEventListener('DOMContentLoaded',init);
 </script>
