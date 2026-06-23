@@ -3,22 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FleetLoom</title>
+<title>MojiOri</title>
 <style>
 :root {
-  --bg: #f8f9fb;
-  --surface: #fff;
-  --surface2: #f0f1f4;
-  --border: #e2e5ea;
-  --text: #212529;
-  --text2: #5f6b7a;
-  --text3: #8b95a5;
-  --accent: #3b6df0;
-  --accent-hover: #2b5cdb;
-  --accent-bg: #edf2fd;
-  --red: #e5484d;
-  --green: #30a46c;
-  --amber: #f5a623;
+  --bg: #fcf7f2;
+  --surface: #fffdf9;
+  --surface2: #f7efe4;
+  --border: #eadfce;
+  --text: #2d221c;
+  --text2: #725c4c;
+  --text3: #9f8876;
+  --accent: #b95f31;
+  --accent-hover: #9c4d25;
+  --accent-bg: #fbe8de;
+  --red: #db4b4e;
+  --green: #2d8f62;
+  --amber: #c58a19;
   --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
   --shadow-lg: 0 4px 16px rgba(0,0,0,.1);
   --radius: 8px;
@@ -30,19 +30,19 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #111318;
-    --surface: #1a1d23;
-    --surface2: #21242c;
-    --border: #2d3139;
-    --text: #e1e4e8;
-    --text2: #8b949e;
-    --text3: #5d6570;
-    --accent: #58a6ff;
-    --accent-hover: #79b8ff;
-    --accent-bg: #0d2847;
-    --red: #f85149;
-    --green: #3fb950;
-    --amber: #d29922;
+    --bg: #17131b;
+    --surface: #201b25;
+    --surface2: #2b2330;
+    --border: #3d3143;
+    --text: #f5e8f3;
+    --text2: #b7a2b9;
+    --text3: #877089;
+    --accent: #f08c70;
+    --accent-hover: #ffab8d;
+    --accent-bg: #4a2a2d;
+    --red: #ff6b6b;
+    --green: #5fc58f;
+    --amber: #f2b84b;
     --shadow: 0 1px 3px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.2);
     --shadow-lg: 0 4px 16px rgba(0,0,0,.4);
   }
@@ -300,7 +300,7 @@ html {
 
 <!-- ── Toolbar ── -->
 <div id="toolbar">
-  <span id="brand">FleetLoom <span>· 文字處理工具</span></span>
+  <span id="brand">MojiOri <span>· 文字織り</span></span>
   <div class="toolbar-div"></div>
   <button class="btn btn-primary" id="btnCalc" onclick="go();" title="計算 (F5)">▶ 計算</button>
   <label class="toggle"><input type="checkbox" id="chkAuto" checked onchange="setauto();">auto</label>
@@ -431,7 +431,7 @@ var defaultPattern = "INSERT INTO employees (first_name, last_name, department, 
 
 // ── L10N ──
 var L10N={
-zh:{brand:'FleetLoom',subtitle:'文字處理工具',calc:'▶ 計算',calcTitle:'計算 (F5)',
+zh:{brand:'MojiOri',subtitle:'文字織り',calc:'▶ 計算',calcTitle:'計算 (F5)',
 auto:'auto',filter:'篩選',collapse:'摺疊',snippetPlaceholder:'插入片段…',
 saveBtn:'💾 儲存',saveTitle:'儲存 pattern',loadBtn:'📂 載入',loadTitle:'載入 pattern',
 shareBtn:'🔗 分享',shareTitle:'複製分享連結',exportBtn:'📤 匯出',exportTitle:'匯出專案 (JSON)',importBtn:'📥 匯入',importTitle:'匯入專案 (JSON)',downloadBtn:'⤓ 下載',downloadTitle:'下載結果',
@@ -451,7 +451,7 @@ savePrompt:'為這個 pattern 命名：',saveEmpty:'Pattern 為空。',noSnippet
 delConfirm:'確定刪除這個 pattern？',copied:'連結已複製！',copyPrompt:'複製連結：',
 savedPatterns:'已儲存的 Pattern',savedFooter:' 個 pattern 已存於瀏覽器',helpTitle:'使用說明',
 langLabel:'中',langTitle:'正體中文'},
-en:{brand:'FleetLoom',subtitle:'text manipulator',calc:'▶ Calculate',calcTitle:'Calculate (F5)',
+en:{brand:'MojiOri',subtitle:'text weaving',calc:'▶ Calculate',calcTitle:'Calculate (F5)',
 auto:'auto',filter:'filter',collapse:'collapse',snippetPlaceholder:'Insert snippet…',
 saveBtn:'💾 Save',saveTitle:'Save pattern',loadBtn:'📂 Load',loadTitle:'Load pattern',
 shareBtn:'🔗 Share',shareTitle:'Copy shareable URL',exportBtn:'📤 Export',exportTitle:'Export project (JSON)',importBtn:'📥 Import',importTitle:'Import project (JSON)',downloadBtn:'⤓ Download',downloadTitle:'Download results',
@@ -471,7 +471,7 @@ savePrompt:'Name for this pattern:',saveEmpty:'Pattern is empty.',noSnippets:'No
 delConfirm:'Delete this pattern?',copied:'URL copied!',copyPrompt:'Copy URL:',
 savedPatterns:'Saved Patterns',savedFooter:' pattern(s) stored in browser',helpTitle:'Help & Reference',
 langLabel:'EN',langTitle:'English'},
-ja:{brand:'FleetLoom',subtitle:'テキスト処理ツール',calc:'▶ 計算',calcTitle:'計算 (F5)',
+ja:{brand:'MojiOri',subtitle:'文字織り',calc:'▶ 計算',calcTitle:'計算 (F5)',
 auto:'auto',filter:'フィルタ',collapse:'折畳',snippetPlaceholder:'スニペット挿入…',
 saveBtn:'💾 保存',saveTitle:'パターンを保存',loadBtn:'📂 読込',loadTitle:'パターンを読込',
 shareBtn:'🔗 共有',shareTitle:'共有URLをコピー',exportBtn:'📤 出力',exportTitle:'プロジェクトを出力 (JSON)',importBtn:'📥 入力',importTitle:'プロジェクトを入力 (JSON)',downloadBtn:'⤓ DL',downloadTitle:'結果をダウンロード',
@@ -523,7 +523,7 @@ function applyL10N(){
 }
 
 function switchLang(lang){
-  currentLang=lang;try{localStorage.setItem('fleetloom_lang',lang);}catch(e){}
+  currentLang=lang;try{localStorage.setItem('mojiori_lang',lang);}catch(e){}
   applyL10N();
   var btns=document.querySelectorAll('.lang-switch');btns.forEach(function(b){b.classList.toggle('active',b.dataset.lang===lang);});
 }
@@ -907,7 +907,7 @@ function insertAtCursor(field,value){
 }
 function insertsnippet(sel){var v=sel.value;sel.selectedIndex=0;if(!v||v==='NULL'||v==='addYourOwn')return;insertAtCursor($('txtPattern'),v);}
 
-var STORAGE_KEY='fleetloom_snippets';
+var STORAGE_KEY='mojiori_snippets';
 function loadSnippets(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[];}catch(e){return[];}}
 function saveSnippets(list){localStorage.setItem(STORAGE_KEY,JSON.stringify(list));refreshSnippetDropdown();}
 function saveSnippet(){
@@ -985,7 +985,7 @@ function shuffleResult(){shuffleData();}
 function removeDuplicatesControl(target){var rows=getRows(target),uniques=rows.unique();showCount(target,uniques.length,rows.length);setRows(target,uniques);}
 function removeDataDuplicates(){removeDuplicatesControl('Data');}
 function removeResultDuplicates(){removeDataDuplicates();}
-function downloadResult(){var text=$('txtResults').value,blob=new Blob([text],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='fleetloom_results.txt';a.click();URL.revokeObjectURL(a.href);}
+function downloadResult(){var text=$('txtResults').value,blob=new Blob([text],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mojiori_results.txt';a.click();URL.revokeObjectURL(a.href);}
 function exportProject(){
   var project={
     v:1,
@@ -1002,7 +1002,7 @@ function exportProject(){
   var a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
   var ts=new Date().toISOString().replace(/:/g,'-').replace(/\..+/,'');
-  a.download='fleetloom_'+ts+'.json';
+  a.download='mojiori_'+ts+'.json';
   a.click();
   URL.revokeObjectURL(a.href);
 }
@@ -1151,7 +1151,7 @@ document.addEventListener('keydown',function(e){
 
 // ── INIT ──
 function init(){
-  try{var sl=localStorage.getItem('fleetloom_lang');if(sl&&L10N[sl])currentLang=sl;}catch(e){}
+  try{var sl=localStorage.getItem('mojiori_lang');if(sl&&L10N[sl])currentLang=sl;}catch(e){}
   loadQueryString();
   if(!$('txtData').value)$('txtData').value=defaultText;
   if(!$('txtPattern').value)$('txtPattern').value=defaultPattern;
