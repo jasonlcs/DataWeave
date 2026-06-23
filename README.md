@@ -1,8 +1,8 @@
-# FleetLoom
+# MojiOri
 
 致敬 [NimbleText](https://nimbletext.com/Live) 的純文字樣板轉換工具，純自用。
 
-原作 NimbleText 是超好用的文字處理工具，這個是它的單檔 HTML 致敬版。
+原作 NimbleText 是超好用的文字織り，這個是它的單檔 HTML 致敬版。
 
 ## 說明
 
@@ -15,7 +15,7 @@
 
 ## 使用
 
-瀏覽器直接開啟 `fleetloom.html` 即可。
+瀏覽器直接開啟 `mojiori.html` 即可。
 
 ## 原作
 
@@ -23,7 +23,7 @@
 
 ## 致敬與聲明 / Statement & Disclaimer
 
-本專案是一個獨立開發的文字處理工具。其核心功能與設計靈感源自於知名網站 [NimbleText](https://nimbletext.com/)。
+本專案是一個獨立開發的文字織り。其核心功能與設計靈感源自於知名網站 [NimbleText](https://nimbletext.com/)。
 * 本專案的所有程式碼皆為從頭撰寫（由開發者與 AI 協作完成），未複製或使用任何來自 NimbleText 的原始碼、圖案或商標。
 * 本專案僅供個人日常工作使用與技術學習交流，無任何商業營利行為。
 
